@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StorePostRequest;
+use App\Http\Requests\UpdatePostRequest;
 use App\Models\Post;
 use App\Services\ApiResponseBuilder;
 use App\Services\PostService;
@@ -31,7 +32,7 @@ class PostController extends Controller
         $apiResponse=$result->success?
             (new ApiResponseBuilder())->message('post created successfully'):
             (new ApiResponseBuilder())->message('post not created successfully');
-        return $apiResponse->data($result)->response();
+        return $apiResponse->data($result->data)->response();
     }
 
     /**
@@ -43,16 +44,20 @@ class PostController extends Controller
         $apiResponse=$result->success?
             (new ApiResponseBuilder())->message('post showed successfully'):
             (new ApiResponseBuilder())->message('post showed unsuccessfully');
-        return $apiResponse->data($result)->response();
+        return $apiResponse->data($result->data)->response();
 
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+    public function update(UpdatePostRequest $request, Post $post)
     {
-        //
+        $result=$this->postService->updatePost($request->all(), $post);
+        $apiResponse=$result->success?
+            (new ApiResponseBuilder())->message('post updated successfully'):
+            (new ApiResponseBuilder())->message('post updated unsuccessfully');
+        return $apiResponse->data($result->data)->response();
     }
 
     /**
