@@ -65,6 +65,10 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        $result=$this->postService->deletePost($post);
+        $apiResponse=$result->success?
+            (new ApiResponseBuilder())->message('post deleted successfully'):
+            (new ApiResponseBuilder())->message('post deleted unsuccessfully');
+        return $apiResponse->response();
     }
 }
