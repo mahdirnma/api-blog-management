@@ -25,7 +25,10 @@ class CategoryController extends Controller
     public function store(StoreCategoryRequest $request)
     {
         $result=$this->categoryService->setCategory($request->validated());
-        return (new ApiResponseBuilder())->data($result->data)->message('categories showed successfully')->response();
+        $apiResponse = $result->success?
+            (new ApiResponseBuilder())->message('categories added successfully'):
+            (new ApiResponseBuilder())->message('categories added unsuccessfully');
+        return $apiResponse->data($result->data)->response();
     }
 
     /**
@@ -33,7 +36,11 @@ class CategoryController extends Controller
      */
     public function show(Category $category)
     {
-        //
+        $result=$this->categoryService->showCategory($category);
+        $apiResponse = $result->success?
+            (new ApiResponseBuilder())->message('categories showed successfully'):
+            (new ApiResponseBuilder())->message('categories show unsuccessfully');
+        return $apiResponse->data($result->data)->response();
     }
 
     /**

@@ -17,4 +17,11 @@ class CategoryService
             return Category::create($category);
         });
     }
+
+    public function showCategory(Category $category)
+    {
+        return app(TryService::class)(function () use ($category){
+            return $category;
+        });
+    }
 }
