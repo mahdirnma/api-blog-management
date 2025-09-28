@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StorePostRequest;
 use App\Models\Post;
 use App\Services\ApiResponseBuilder;
 use App\Services\PostService;
@@ -24,13 +25,13 @@ class PostController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StorePostRequest $request)
     {
-        $request=$this->postService->setPost($request->all());
-        $apiResponse=$request->success?
+        $result=$this->postService->setPost($request->all());
+        $apiResponse=$result->success?
             (new ApiResponseBuilder())->message('post created successfully'):
             (new ApiResponseBuilder())->message('post not created successfully');
-        return $apiResponse->data($request)->response();
+        return $apiResponse->data($result)->response();
     }
 
     /**
@@ -38,7 +39,12 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        $result=$this->postService->showPost($post);
+        $apiResponse=$result->success?
+            (new ApiResponseBuilder())->message('post showed successfully'):
+            (new ApiResponseBuilder())->message('post showed unsuccessfully');
+        return $apiResponse->data($result)->response();
+
     }
 
     /**
