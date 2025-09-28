@@ -4,16 +4,21 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Post;
+use App\Services\ApiResponseBuilder;
+use App\Services\PostService;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    public function __construct(public PostService $postService){}
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $result=$this->postService->getPosts();
+        return (new ApiResponseBuilder())->message('post gets successfully')->data($result)->response();
     }
 
     /**
@@ -21,7 +26,11 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request=$this->postService->setPost($request->all());
+        $apiResponse=$request->success?
+            (new ApiResponseBuilder())->message('post created successfully'):
+            (new ApiResponseBuilder())->message('post not created successfully');
+        return $apiResponse->data($request)->response();
     }
 
     /**
