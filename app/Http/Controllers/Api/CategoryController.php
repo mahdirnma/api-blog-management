@@ -48,7 +48,11 @@ class CategoryController extends Controller
      */
     public function update(Request $request, Category $category)
     {
-        //
+        $result=$this->categoryService->updateCategory($request->all(), $category);
+        $apiResponse = $result->success?
+            (new ApiResponseBuilder())->message('categories updated successfully'):
+            (new ApiResponseBuilder())->message('categories update unsuccessfully');
+        return $apiResponse->data($result->data)->response();
     }
 
     /**
@@ -56,6 +60,10 @@ class CategoryController extends Controller
      */
     public function destroy(Category $category)
     {
-        //
+        $result=$this->categoryService->deleteCategory($category);
+        $apiResponse = $result->success?
+            (new ApiResponseBuilder())->message('categories deleted successfully'):
+            (new ApiResponseBuilder())->message('categories delete unsuccessfully');
+        return $apiResponse->response();
     }
 }

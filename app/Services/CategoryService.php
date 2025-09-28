@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
 
 class CategoryService
@@ -22,6 +23,19 @@ class CategoryService
     {
         return app(TryService::class)(function () use ($category){
             return $category;
+        });
+    }
+
+    public function updateCategory($data, Category $category)
+    {
+        return app(TryService::class)(function () use ($data, $category){
+            $cat=$category->update($data);
+            return $cat;
+        });
+    }
+    public function deleteCategory(Category $category){
+        return app(TryService::class)(function () use ($category){
+            return $category->update(['is_active',0]);
         });
     }
 }
