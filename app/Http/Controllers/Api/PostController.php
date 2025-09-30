@@ -20,7 +20,7 @@ class PostController extends Controller
     public function index()
     {
         $result=$this->postService->getPosts();
-        return (new ApiResponseBuilder())->message('post gets successfully')->data($result)->response();
+        return (new ApiResponseBuilder())->message('post gets successfully')->data($result->data)->response();
     }
 
     /**
